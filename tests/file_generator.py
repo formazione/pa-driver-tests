@@ -19,7 +19,7 @@ quest = []
 def opentext():
     rep = filedialog.askopenfilenames(
         # parent=root,
-        initialdir=os.getcwd(),
+        initialdir=os.getcwd() + "data",
         initialfile='tmp',
         filetypes=[
             ("TXT", "*.txt")])
@@ -35,7 +35,7 @@ with open(name[0]) as file:
 testo = ""
 for q in cont:
     q = q.split("\n")
-    testo += f"{{question:\'{q[0]}\', image: 'image01.png', answers : [\'{q[1]}\',\'{q[2]}\',\'{q[3]}\',\'{q[4]}\']}},\n"
+    testo += f"{{question:\'{q[0]}\', image: '', answers : [\'{q[1]}\',\'{q[2]}\',\'{q[3]}\',\'{q[4]}\']}},\n"
     quest.append(testo)
 
 

@@ -1,4 +1,11 @@
-<!DOCTYPE html>
+
+import os
+from createfile import createfile
+from tkinter import filedialog
+from random import shuffle
+
+
+start = """<!DOCTYPE html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
   <head>
     <meta charset="UTF-8">
@@ -57,12 +64,66 @@
     <script src="../../../resources/ezquiz.min.js"></script>
     <script src="../../../resources/javascript.min.js"></script>
     <script>EZQuiz.generate({
-      info : 'This test reviews what you have learned in Chapter 2 (p.7-22) of the Pennsylvania Driver\'s Manual.<br>Answer the questions as best as you can.',
+      info : 'This test reviews what you have learned in Chapter 2 (p.7-22) of the Pennsylvania Driver\\'s Manual.<br>Answer the questions as best as you can.',
 
-      quiz : [{question:'Come ti chiami', image: '', answers : ['carla','tommaso','+gio','sara']},
-{question:'Dove sei nato', image: '', answers : ['torino','venezia','+genova','milano']},
+      quiz : ["""
 
+end = """
       ]
     });</script>
   </body>
-</html>
+</html>"""
+questions = """        {
+          question : 'When you see this sign, you must:',
+          image : 'c2-q01.png',
+          answers : [
+            '+Stop completely, check for pedestrians, and cross traffic',
+            'Slow down without coming to a complete stop',
+            'Stop completely and wait for a green light',
+            'Slow down and check for traffic'
+          ]
+        },"""
+
+quest = []
+
+def opentext():
+    rep = filedialog.askopenfilenames(
+        # parent=root,
+        initialdir=os.getcwd() + "data",
+        initialfile='tmp',
+        filetypes=[
+            ("TXT", "*.txt")])
+    return rep
+
+
+name = opentext()
+with open(name[0]) as file:
+    file = file.read()
+    # store a question in each item of cont
+    cont = [l for l in file.split("\n\n")]
+
+testo = ""
+for q in cont:
+    q = q.split("\n")
+    # first answer is right
+    q[1] = "+" + q[1]
+    answers = q[:]
+    answers.pop(0)
+    # shuffle answers and then add to q
+    shuffle(answers)
+    q = [q[0], *answers]
+    print(q)
+    testo += f"{{question:\'{q[0]}\', image: '', answers : [\'{q[1]}\',\'{q[2]}\',\'{q[3]}\',\'{q[4]}\']}},\n"
+    quest.append(testo)
+
+
+html = start + "".join(testo) + end
+def createfile(name, html):
+    with open("data/review/" + name, "w") as newfile:
+        newfile.write(html)
+    return html
+
+
+createfile("02.html", html)
+print(os.getcwd())
+os.startfile("data\\review\\02.html")
