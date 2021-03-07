@@ -1,7 +1,7 @@
 from resource.start import start, end
 import os
 from createfile import createfile
-
+from tkinter import filedialog
 
 questions = """        {
           question : 'When you see this sign, you must:',
@@ -15,7 +15,19 @@ questions = """        {
         },"""
 
 quest = []
-with open("data/test.txt") as file:
+
+def opentext():
+    rep = filedialog.askopenfilenames(
+        # parent=root,
+        initialdir=os.getcwd(),
+        initialfile='tmp',
+        filetypes=[
+            ("TXT", "*.txt")])
+    return rep
+
+
+name = opentext()
+with open(name[0]) as file:
     file = file.read()
     # store a question in each item of cont
     cont = [l for l in file.split("\n\n")]
